@@ -12,6 +12,21 @@ describe('enhancer.js', function() {
         durability: 100,
         enhancement: 20
     }
+    const item3 = {
+        name: 'Shovel',
+        durability: 4,
+        enhancement: 7
+    }
+    const item4 = {
+        name: 'Rainbow',
+        durability: 8,
+        enhancement: 17
+    }
+    const item5 = {
+        name: 'Duck',
+        durability: 9,
+        enhancement: 15
+    }
 
     it('should run tests without errors', () => {
         expect(true).toBe(true);
@@ -46,9 +61,9 @@ describe('enhancer.js', function() {
     // SUCCEED METHOD
     describe('succeed(item) method', function() {
         it('should return object w/name, durability & enhancement as properties', function(){
-            expect(repair(item1)).toHaveProperty('name');
-            expect(repair(item1)).toHaveProperty('durability');
-            expect(repair(item1)).toHaveProperty('enhancement');
+            expect(succeed(item1)).toHaveProperty('name');
+            expect(succeed(item1)).toHaveProperty('durability');
+            expect(succeed(item1)).toHaveProperty('enhancement');
         })
 
         it('should return object with enhancement score increased by 1 if original enhancement is less than 20', function() {
@@ -75,6 +90,45 @@ describe('enhancer.js', function() {
 
     // FAIL METHOD
     describe('fail(item) method', function() {
+        it('should return object w/name, durability & enhancement as properties', function() {
+            expect(fail(item1)).toHaveProperty('name');
+            expect(fail(item1)).toHaveProperty('durability');
+            expect(fail(item1)).toHaveProperty('enhancement');
+        })
+
+        it('should not affect the name', function() {
+            expect(fail(item1).name).toBe(item1.name);
+            expect(fail(item2).name).toBe(item2.name);
+        })
+
+        it('if enhancement < 15, durability should decrease by 5', function() {
+            expect(fail(item1).durability).toBe(45);
+            expect(fail(item2).durability).not.toBe(95);
+        })
+
+        it('if enhancement >= 15, durability should decrease by 10', function() {
+            expect(fail(item1).durability).not.toBe(40);
+            expect(fail(item2).durability).toBe(90);
+        })
+
+        it('if enhancement is <= 16, enhancement should stay the same', function() {
+            expect(fail(item1).enhancement).toBe(item1.enhancement);
+            expect(fail(item2).enhancement).not.toBe(item2.enhancement);
+        })
+
+        it('if enhancement is > 16, enhancement should decrease by 1', function() {
+            expect(fail(item1).enhancement).not.toBe(item1.enhancement-1);
+            expect(fail(item2).enhancement).toBe(19);
+            expect(fail(item4).enhancement).toBe(16);
+        })
+
+        it('should never return durability less than 0', function() {
+            expect(fail(item3).durability).not.toBe(-1);
+            expect(fail(item3).durability).toBe(0);
+            expect(fail(item4).durability).not.toBe(-2);
+            expect(fail(item4).durability).toBe(0);
+            expect(fail(item5).durability).toBe(0);
+        })
 
     })
 })

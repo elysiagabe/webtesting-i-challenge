@@ -11,11 +11,37 @@ function succeed(item) {
   } else {
     return { ...item }
   }
-  
 }
 
 function fail(item) {
-  return { ...item};
+  if (item.durability < 10 && item.enhancement > 16) {
+    return {
+      ...item,
+      durability: 0,
+      enhancement: item.enhancement - 1
+    }
+  } else if (item.durability < 10 && item.enhancement >= 15 || item.durability < 5) {
+    return {
+      ...item,
+      durability: 0
+    }
+  } else if (item.enhancement > 16) {
+    return { 
+      ...item, 
+      durability: item.durability - 10, 
+      enhancement: item.enhancement - 1 
+    }
+  } else if (item.enhancement >= 15) {
+    return { 
+      ...item, 
+      durability: item.durability - 10
+    }
+  } else {
+    return { 
+      ...item, 
+      durability: item.durability - 5
+    };
+  } 
 }
 
 function repair(item) {
