@@ -1,12 +1,12 @@
 const { repair, succeed, fail, get } = require('./enhancer.js');
 // test away!
 describe('enhancer.js', function() {
+    // TEST ITEMS
     const item1 = {
         name: 'Sword',
         durability: 50,
         enhancement: 10
     }
-
     const item2 = {
         name: 'Hammer',
         durability: 100,
@@ -49,6 +49,26 @@ describe('enhancer.js', function() {
             expect(repair(item1)).toHaveProperty('name');
             expect(repair(item1)).toHaveProperty('durability');
             expect(repair(item1)).toHaveProperty('enhancement');
+        })
+
+        it('should return object with enhancement score increased by 1 if original enhancement is less than 20', function() {
+            expect(succeed(item1).enhancement).toBe(11);
+            expect(succeed(item1).enhancement).not.toBe(item1.enhancement);
+        })
+
+        it('should return object with enhancement score equal to 20 if original enhancement is 20', function() {
+            expect(succeed(item2).enhancement).toBe(item2.enhancement);
+            expect(succeed(item2).enhancement).not.toBe(21);
+        })
+
+        it('should not affect the durability number', function() {
+            expect(succeed(item1).durability).toBe(item1.durability);
+            expect(succeed(item2).durability).toBe(item2.durability);
+        })
+
+        it('should not affect the name', function() {
+            expect(succeed(item1).name).toBe(item1.name);
+            expect(succeed(item2).name).toBe(item2.name);
         })
 
     })
