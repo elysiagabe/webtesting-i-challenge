@@ -27,6 +27,11 @@ describe('enhancer.js', function() {
         durability: 9,
         enhancement: 15
     }
+    const item6 ={
+        name: 'Puppy',
+        durability: 29,
+        enhancement: 0
+    }
 
     it('should run tests without errors', () => {
         expect(true).toBe(true);
@@ -122,6 +127,11 @@ describe('enhancer.js', function() {
             expect(fail(item4).enhancement).toBe(16);
         })
 
+        it('if enhancement level is 0, nothing should happen', function() {
+            expect(fail(item4)).not.toEqual(item4);
+            expect(fail(item6)).toEqual(item6)
+        })
+
         it('should never return durability less than 0', function() {
             expect(fail(item3).durability).not.toBe(-1);
             expect(fail(item3).durability).toBe(0);
@@ -130,5 +140,28 @@ describe('enhancer.js', function() {
             expect(fail(item5).durability).toBe(0);
         })
 
+    })
+
+    // [STRETH] GET METHOD
+    describe('get(item) method', function() {
+        it('if enhancement level > 0, should return name with enhancement level preceding name', function() {
+            expect(get(item4).name).not.toBe(item4.name);
+            expect(get(item4).name).toBe(`[+${item4.enhancement}] ${item4.name}`);
+            expect(get(item6).name).not.toBe(`[+${item6.enhancement}] ${item6.name}`);
+        })
+
+        it('if enhancement level = 0, no change should be made to name', function() {
+            expect(get(item6).name).toBe(item6.name);
+        })
+
+        it('should not affect enhancement level', function() {
+            expect(get(item4).enhancement).toBe(item4.enhancement);
+            expect(get(item6).enhancement).toBe(item6.enhancement);
+        })
+
+        it('should not affect durability', function() {
+            expect(get(item4).durability).toBe(item4.durability);
+            expect(get(item6).durability).toBe(item6.durability);
+        })
     })
 })
